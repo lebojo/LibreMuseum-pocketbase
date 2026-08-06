@@ -1,0 +1,316 @@
+{
+  "museum": {
+    "name": "Museum of Modest Arts",
+    "subtitle": "Permanent collections and temporary exhibitions",
+    "logo": "logo.png",
+    "cover": "cover.png",
+    "primary_color": "#1B1B1F",
+    "accent_color": "#B8860B",
+    "default_lang": "en",
+    "website": "https://example.org",
+    "email": "contact@example.org",
+    "phone": "+33 1 23 45 67 89",
+    "address": "12 rue des Tanneurs, 34000 Montpellier",
+    "latitude": 43.6108,
+    "longitude": 3.8767
+  },
+
+  "languages": [
+    { "code": "en", "label": "English", "sort": 0, "active": true },
+    { "code": "fr", "label": "Français", "sort": 1, "active": true }
+  ],
+
+  "floors": [
+    { "key": "ground", "name": "Ground floor", "level": 0, "map": "map-ground-floor.png", "sort": 0 },
+    { "key": "first", "name": "First floor", "level": 1, "map": "map-first-floor.png", "sort": 1 }
+  ],
+
+  "rooms": [
+    { "key": "hall", "floor": "ground", "name": "Entrance hall", "code": "H", "sort": 0 },
+    { "key": "r1", "floor": "ground", "name": "Room of origins", "code": "R1", "sort": 1 },
+    { "key": "r2", "floor": "ground", "name": "Glass gallery", "code": "R2", "sort": 2 },
+    { "key": "r3", "floor": "first", "name": "Contemporary room", "code": "R3", "sort": 3 }
+  ],
+
+  "exhibitions": [
+    {
+      "key": "permanent",
+      "slug": "permanent-collection",
+      "cover": "exhibition-permanent.png",
+      "is_permanent": true,
+      "rooms": ["r1", "r2"],
+      "sort": 0,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Permanent Collection",
+          "subtitle": "Five centuries of everyday objects",
+          "description": "<p>The permanent collection brings together ordinary objects that time alone has turned into precious witnesses. Ceramics, glass, textiles: each piece tells of a gesture, a workshop, a city.</p><p>The route follows a chronological thread, from the 16th century to the workshops of the early 20th.</p>",
+          "audio": "audio-intro.wav"
+        },
+        "fr": {
+          "title": "Collection permanente",
+          "subtitle": "Cinq siècles d'objets du quotidien",
+          "description": "<p>La collection permanente rassemble des objets ordinaires devenus, par le seul effet du temps, des témoins précieux. Céramique, verre, textile : chaque pièce raconte un geste, un atelier, une ville.</p><p>Le parcours suit un fil chronologique, du XVI<sup>e</sup> siècle aux ateliers du début du XX<sup>e</sup>.</p>",
+          "audio": "audio-intro.wav"
+        }
+      }
+    },
+    {
+      "key": "temporary",
+      "slug": "cobalt-blue",
+      "cover": "exhibition-temporary.png",
+      "is_permanent": false,
+      "start_date": "2026-09-15",
+      "end_date": "2027-01-31",
+      "rooms": ["r3"],
+      "sort": 1,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Cobalt Blue",
+          "subtitle": "Temporary exhibition — autumn 2026",
+          "description": "<p>One colour, one obsession. From medieval Persia to 1960s posters, cobalt blue cuts across techniques and continents.</p>",
+          "audio": ""
+        },
+        "fr": {
+          "title": "Bleu de cobalt",
+          "subtitle": "Exposition temporaire — automne 2026",
+          "description": "<p>Une couleur, une obsession. De la Perse médiévale aux affiches des années 1960, le bleu de cobalt traverse les techniques et les continents.</p>",
+          "audio": ""
+        }
+      }
+    }
+  ],
+
+  "artworks": [
+    {
+      "key": "a1",
+      "exhibition": "permanent",
+      "room": "r1",
+      "code": "1",
+      "pos_x": 0.22,
+      "pos_y": 0.35,
+      "artist": "Anonymous workshop",
+      "year": "around 1580",
+      "technique": "Glazed terracotta",
+      "inventory_number": "INV-1580-004",
+      "images": ["artwork-1.png"],
+      "sort": 0,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Narrow-necked Pitcher",
+          "text": "<p>This pitcher carried oil from the mill. Its narrow neck limited evaporation; the glaze, applied only inside, protected the porous clay.</p><p>The fingerprint visible under the handle is the potter's own.</p>",
+          "audio": "audio-artwork-1.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "Pichet à col étroit",
+          "text": "<p>Ce pichet servait à transporter l'huile depuis le moulin. Son col étroit limitait l'évaporation ; la glaçure, appliquée à l'intérieur seulement, protégeait la terre poreuse.</p><p>La trace de doigt visible sous l'anse est celle du potier.</p>",
+          "audio": "audio-artwork-1.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a2",
+      "exhibition": "permanent",
+      "room": "r1",
+      "code": "2",
+      "pos_x": 0.48,
+      "pos_y": 0.3,
+      "artist": "Marguerite Vasseur",
+      "year": "1712",
+      "technique": "Linen embroidered with silk",
+      "inventory_number": "INV-1712-011",
+      "images": ["artwork-2.png"],
+      "sort": 1,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Sampler",
+          "text": "<p>A sampler was used to learn embroidery stitches and the alphabet. This one is signed and dated, which is rare: Marguerite Vasseur was eleven years old.</p>",
+          "audio": "audio-artwork-2.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "Marquoir d'apprentissage",
+          "text": "<p>Un marquoir servait à apprendre les points de broderie et l'alphabet. Celui-ci est signé et daté, ce qui est rare : Marguerite Vasseur avait onze ans.</p>",
+          "audio": "audio-artwork-2.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a3",
+      "exhibition": "permanent",
+      "room": "r2",
+      "code": "3",
+      "pos_x": 0.71,
+      "pos_y": 0.52,
+      "artist": "Claret Glassworks",
+      "year": "1834",
+      "technique": "Blown glass",
+      "inventory_number": "INV-1834-002",
+      "images": ["artwork-3.png"],
+      "sort": 2,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Glassblower's Demijohn",
+          "text": "<p>Blown from a single gather, this thirty-litre demijohn was used to transport wine. The bubbles trapped in its wall betray too fast a firing — a flaw that made it unsellable, and that saved it.</p>",
+          "audio": "audio-artwork-3.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "Bonbonne de verrier",
+          "text": "<p>Soufflée d'une seule masse, cette bonbonne de trente litres servait au transport du vin. Les bulles emprisonnées dans la paroi trahissent une cuisson trop rapide — un défaut qui la rendait invendable, et qui l'a sauvée.</p>",
+          "audio": "audio-artwork-3.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a4",
+      "exhibition": "temporary",
+      "room": "r3",
+      "code": "10",
+      "pos_x": 0.3,
+      "pos_y": 0.42,
+      "artist": "Kashan workshop",
+      "year": "13th century",
+      "technique": "Ceramic with cobalt decoration",
+      "inventory_number": "INV-1250-001",
+      "images": ["artwork-4.png"],
+      "sort": 0,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Star Tile",
+          "text": "<p>Cobalt, imported as raw ore, cost more than gold by weight. It was reserved for fine lines: outlines, inscriptions, veins.</p>",
+          "audio": "audio-artwork-4.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "Carreau étoilé",
+          "text": "<p>Le cobalt, importé sous forme de minerai, coûtait plus cher que l'or à poids égal. On le réservait aux tracés fins : contours, inscriptions, nervures.</p>",
+          "audio": "audio-artwork-4.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a5",
+      "exhibition": "temporary",
+      "room": "r3",
+      "code": "11",
+      "pos_x": 0.55,
+      "pos_y": 0.6,
+      "artist": "Anonymous",
+      "year": "1962",
+      "technique": "Screen print on paper",
+      "inventory_number": "INV-1962-047",
+      "images": ["artwork-5.png"],
+      "sort": 1,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Dance Hall Poster",
+          "text": "<p>Three colour passes, one of them a blue deliberately offset by a millimetre. The printer left the flaw in: it gave the image movement.</p>",
+          "audio": "audio-artwork-5.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "Affiche pour un bal",
+          "text": "<p>Trois passages de couleur, dont un bleu volontairement décalé d'un millimètre. L'imprimeur a laissé le défaut : il donnait du mouvement.</p>",
+          "audio": "audio-artwork-5.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a6",
+      "exhibition": "temporary",
+      "room": "r3",
+      "code": "12",
+      "pos_x": 0.78,
+      "pos_y": 0.28,
+      "artist": "Nadia Berrada",
+      "year": "2024",
+      "technique": "Pigment on loose canvas",
+      "inventory_number": "INV-2024-003",
+      "images": ["artwork-6.png"],
+      "sort": 2,
+      "published": false,
+      "translations": {
+        "en": {
+          "title": "Untitled (deep blue)",
+          "text": "<p>This work is deliberately left UNPUBLISHED in the demo data: it is there to verify that content in preparation stays invisible to the app.</p>",
+          "audio": "",
+          "audio_duration": 0
+        },
+        "fr": {
+          "title": "Sans titre (bleu profond)",
+          "text": "<p>Œuvre laissée volontairement NON PUBLIÉE dans le jeu de démonstration : elle sert à vérifier qu'un contenu en préparation reste invisible de l'app.</p>",
+          "audio": "",
+          "audio_duration": 0
+        }
+      }
+    }
+  ],
+
+  "pages": [
+    {
+      "key": "info",
+      "slug": "visitor-information",
+      "icon": "info.circle",
+      "sort": 0,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Visitor Information",
+          "body": "<p><strong>Opening hours</strong><br>Tuesday to Sunday, 10am – 6pm. Closed on Mondays.</p><p><strong>Admission</strong><br>Full price €8 · Reduced €5 · Free under 18.</p>"
+        },
+        "fr": {
+          "title": "Informations pratiques",
+          "body": "<p><strong>Horaires</strong><br>Du mardi au dimanche, 10h – 18h. Fermé le lundi.</p><p><strong>Tarifs</strong><br>Plein tarif 8 € · Réduit 5 € · Gratuit moins de 18 ans.</p>"
+        }
+      }
+    },
+    {
+      "key": "access",
+      "slug": "accessibility",
+      "icon": "figure.roll",
+      "sort": 1,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Accessibility",
+          "body": "<p>The entire route is wheelchair accessible. Folding seats are available at the front desk.</p>"
+        },
+        "fr": {
+          "title": "Accessibilité",
+          "body": "<p>L'ensemble du parcours est accessible en fauteuil roulant. Des sièges pliants sont disponibles à l'accueil.</p>"
+        }
+      }
+    },
+    {
+      "key": "legal",
+      "slug": "legal-notice",
+      "icon": "doc.text",
+      "sort": 2,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Legal Notice",
+          "body": "<p>Demonstration content. Replace these pages with the museum's actual legal notice before going into production.</p>"
+        },
+        "fr": {
+          "title": "Mentions légales",
+          "body": "<p>Contenu de démonstration. Remplacez ces pages par les mentions légales réelles du musée avant toute mise en production.</p>"
+        }
+      }
+    }
+  ]
+}
