@@ -1,0 +1,16 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	# The bundle is highly compressible JSON: compression divides its size by
+	# about 5, which matters on the mobile network of a museum basement.
+	encode zstd gzip
+
+	reverse_proxy pocketbase:8090 {
+		# PocketBase reads the visitor's real IP from these headers for its
+		# rate limits and its logs.
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Real-IP {remote_host}
+	}
+}

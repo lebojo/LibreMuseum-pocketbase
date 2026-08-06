@@ -1,0 +1,41 @@
+services:
+  pocketbase:
+    build:
+      context: .
+      args:
+        PB_VERSION: ${PB_VERSION:-0.39.10}
+    restart: unless-stopped
+    volumes:
+      # All the museum state (database + uploaded files) lives here.
+      # This is THE volume to back up.
+      - pb_data:/pb/pb_data
+      # Mounted read-only so a hook can be fixed without a rebuild.
+      - ./pb_hooks:/pb/pb_hooks:ro
+      - ./pb_migrations:/pb/pb_migrations:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8090/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN missing - copy .env.example to .env}
+      ACME_EMAIL: ${ACME_EMAIL:?ACME_EMAIL missing - copy .env.example to .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - pocketbase
+
+volumes:
+  pb_data:
+  caddy_data:
+  caddy_config:

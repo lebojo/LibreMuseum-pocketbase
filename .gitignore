@@ -1,0 +1,11 @@
+# PocketBase data: SQLite database, uploaded files, backups.
+# Never versioned — the schema lives in pb_migrations/, the content in the museum.
+pb_data/
+
+# PocketBase binary downloaded by scripts/dev.sh
+bin/
+
+# Local secrets
+.env
+
+.DS_Store
