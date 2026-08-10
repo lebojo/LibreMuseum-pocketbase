@@ -40,9 +40,15 @@ One commit = one coherent change. Split rather than lump together.
 ```bash
 ./scripts/dev.sh              # working database, :8090
 ./scripts/dev.sh --seed       # ERASES pb_data/ then reseeds - destructive
+./scripts/test.sh             # disposable database in .test-data/, :8091
 ./bin/pocketbase migrate create "name"  --dir=./pb_data --migrationsDir=./pb_migrations
 ./bin/pocketbase superuser upsert mail password --dir=./pb_data
 ```
+
+**Anything that is hard to undo goes through `scripts/test.sh`**: a migration to try, content to
+break on purpose, the behaviour of a blank database. It recreates `.test-data/` from scratch,
+never touches `pb_data/`, and provides a known admin account (`test@example.org` /
+`testtest1234`). The port differs, so both instances can run side by side.
 
 Checking a change:
 

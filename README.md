@@ -46,6 +46,22 @@ curl -s localhost:8090/api/app/bundle | jq
 
 Subsequent runs: `./scripts/dev.sh` (without `--seed`, which erases `pb_data/`).
 
+## Testing without risking your dev database
+
+```bash
+./scripts/test.sh
+```
+
+Brings up a disposable instance on port **8091**: fresh database in `.test-data/`, demo content,
+and an administration account already created (`test@example.org` / `testtest1234`).
+
+`pb_data/` is never touched, and the ports differ: dev and test run at the same time. The test
+database is recreated from scratch on every run, but stays on disk after shutdown so it can be
+inspected.
+
+It is the right tool for anything hard to undo: trying a migration, breaking content on purpose,
+checking the behaviour of a blank database, or pointing the mobile app at clean data.
+
 ## Deploying
 
 ```bash
@@ -76,6 +92,7 @@ pb_hooks/         Server logic in JS, hot-reloaded.
   seed.pb.js        `pocketbase seed` command
   lib/content.js    Bundle building and version computation
 seed/             Demo museum (content + generated media)
+scripts/          dev.sh (working database), test.sh (disposable database)
 docs/             Content guide aimed at the museum staff
 ```
 
