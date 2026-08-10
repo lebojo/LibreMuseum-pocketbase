@@ -2,6 +2,9 @@
 # Never versioned — the schema lives in pb_migrations/, the content in the museum.
 pb_data/
 
+# Disposable database from scripts/test.sh, recreated on every run
+.test-data/
+
 # PocketBase binary downloaded by scripts/dev.sh
 bin/
 
