@@ -34,7 +34,7 @@ $app.rootCmd.addCommand(
       const asset = (name) => (name ? $filesystem.fileFromPath(`${seedDir}/assets/${name}`) : null);
 
       // --- Languages -------------------------------------------------------
-      // `fr` is already created by the bootstrap migration: we reuse it instead
+      // `en` is already created by the bootstrap migration: we reuse it instead
       // of duplicating it (the unique index on `code` would reject it).
       const langByCode = {};
       data.languages.forEach((l) => {

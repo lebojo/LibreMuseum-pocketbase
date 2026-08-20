@@ -10,18 +10,18 @@
 migrate(
   (app) => {
     const languageCollection = app.findCollectionByNameOrId("language");
-    const french = new Record(languageCollection);
-    french.set("code", "fr");
-    french.set("label", "Français");
-    french.set("sort", 0);
-    french.set("active", true);
-    app.save(french);
+    const english = new Record(languageCollection);
+    english.set("code", "en");
+    english.set("label", "English");
+    english.set("sort", 0);
+    english.set("active", true);
+    app.save(english);
 
     const museum = new Record(app.findCollectionByNameOrId("museum"));
     museum.set("name", "My museum");
     museum.set("primary_color", "#1B1B1F");
     museum.set("accent_color", "#B8860B");
-    museum.set("default_lang", french.id);
+    museum.set("default_lang", english.id);
     app.save(museum);
 
     const settings = app.settings();
@@ -32,7 +32,7 @@ migrate(
     const museum = app.findFirstRecordByFilter("museum", "1=1");
     if (museum) app.delete(museum);
 
-    const french = app.findFirstRecordByFilter("language", "code = 'fr'");
-    if (french) app.delete(french);
+    const english = app.findFirstRecordByFilter("language", "code = 'en'");
+    if (english) app.delete(english);
   },
 );

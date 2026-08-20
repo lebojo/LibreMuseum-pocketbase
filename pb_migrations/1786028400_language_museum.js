@@ -29,7 +29,7 @@ migrate(
           required: true,
           max: 60,
           presentable: true,
-          help: "Name of the language written IN that language (Français, English, Deutsch).",
+          help: "Name of the language written IN that language (English, Deutsch, Español).",
         },
         { type: "number", name: "sort", onlyInt: true, help: "Display order." },
         {
