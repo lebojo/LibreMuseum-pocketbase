@@ -124,3 +124,9 @@ limit the number of accounts than to hope for a separation PocketBase does not o
 **No visitor account.** The app is anonymous and read-only. The `users` collection created by
 default by PocketBase is deleted by a migration, so as not to leave an open sign-up API with no
 purpose.
+
+## License
+
+MIT — see [LICENSE](LICENSE). [PocketBase](https://github.com/pocketbase/pocketbase), on which
+the server is built, is under the same licence. The demo media in `seed/assets/` are generated
+for this repository and are covered by it.
