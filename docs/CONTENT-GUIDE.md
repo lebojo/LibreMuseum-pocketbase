@@ -6,6 +6,10 @@ Everything happens in the **dashboard**, at the address your provider gave you (
 `/_/`). What you save there appears in the visitors' app **within a minute**, with no update to
 download.
 
+> Starting from scratch, or never opened the dashboard before? Open
+> [`getting-started.html`](getting-started.html) in a web browser: same content, with screenshots
+> and the order to follow. Come back here for the detail, field by field.
+
 ---
 
 ## The main principles

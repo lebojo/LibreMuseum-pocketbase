@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started — the museum dashboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #1B1B1F;
+    --muted: #55555E;
+    --paper: #FCFBF8;
+    --card: #FFFFFF;
+    --rule: #E3DFD5;
+    --accent: #8A6510;
+    --accent-soft: #F6F0E1;
+    --warn: #97361D;
+    --warn-soft: #FBEEE9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 19px;
+    line-height: 1.65;
+  }
+
+  .page {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 6rem;
+  }
+
+  /* ---------- headings ---------- */
+
+  h1, h2, h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  h1 { font-size: 2.4rem; margin: 0 0 .6rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.7rem; margin: 3.5rem 0 1rem; }
+  h3 { font-size: 1.25rem; margin: 2.2rem 0 .6rem; }
+
+  h2 .num {
+    display: inline-block;
+    min-width: 1.9rem;
+    color: var(--accent);
+  }
+
+  .lede {
+    font-size: 1.15rem;
+    color: #3A3A44;
+    margin: 0 0 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin: 0 0 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  p { margin: 0 0 1.1rem; }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--ink); }
+
+  code, .ui {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88em;
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: .1em .35em;
+    white-space: nowrap;
+  }
+
+  strong { font-weight: 600; }
+
+  /* ---------- table of contents ---------- */
+
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin: 0 0 1rem;
+  }
+  nav.toc h2 {
+    font-size: 1rem;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 0 0 .8rem;
+  }
+  nav.toc ol { margin: 0; padding-left: 1.4rem; }
+  nav.toc li { margin: .35rem 0; }
+
+  /* ---------- steps ---------- */
+
+  ol.steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 1.5rem 0 2rem;
+    padding: 0;
+  }
+  ol.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 3.4rem;
+    margin-bottom: 1.8rem;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -.1rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 1px solid #E0D3B0;
+    color: var(--accent);
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.steps > li > p:last-child { margin-bottom: 0; }
+  ol.steps h3 { margin: 0 0 .4rem; font-size: 1.15rem; }
+  /* screenshots inside a step reclaim the width taken by the number */
+  ol.steps figure { margin-left: -3.4rem; width: calc(100% + 3.4rem); }
+
+  ul.plain { padding-left: 1.3rem; margin: 0 0 1.1rem; }
+  ul.plain li { margin: .4rem 0; }
+
+  /* ---------- figures ---------- */
+
+  figure {
+    margin: 1.6rem 0 2rem;
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: #fff;
+  }
+  figure img.narrow {
+    max-width: 26rem;
+    margin: 0 auto;
+  }
+  figcaption {
+    font-size: .92rem;
+    color: var(--muted);
+    margin-top: .6rem;
+    text-align: center;
+  }
+
+  /* ---------- callouts ---------- */
+
+  .note, .warn {
+    border-radius: 8px;
+    padding: 1.1rem 1.3rem;
+    margin: 1.6rem 0;
+    font-size: .98rem;
+  }
+  .note {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+  }
+  .warn {
+    background: var(--warn-soft);
+    border-left: 4px solid var(--warn);
+  }
+  .note p:last-child, .warn p:last-child { margin-bottom: 0; }
+  .note .label, .warn .label {
+    display: block;
+    font-weight: 700;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: .35rem;
+  }
+  .note .label { color: var(--accent); }
+  .warn .label { color: var(--warn); }
+
+  /* ---------- diagram ---------- */
+
+  .levels {
+    margin: 2rem 0;
+  }
+  .levels .box {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 5px solid var(--accent);
+    border-radius: 8px;
+    padding: .9rem 1.2rem;
+  }
+  .levels .box .name {
+    font-weight: 600;
+  }
+  .levels .box .ex {
+    color: var(--muted);
+    font-size: .95rem;
+  }
+  .levels .l2 { margin-left: 2.5rem; }
+  .levels .l3 { margin-left: 5rem; }
+  .levels .arm {
+    width: 2px;
+    height: 1.1rem;
+    background: var(--rule);
+    margin: 0 0 0 1.2rem;
+  }
+  .levels .l2 + .arm { margin-left: 3.7rem; }
+
+  /* ---------- tables ---------- */
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.4rem 0 2rem;
+    font-size: .96rem;
+  }
+  th, td {
+    text-align: left;
+    padding: .6rem .7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    border-bottom: 2px solid var(--rule);
+  }
+  td:first-child { white-space: nowrap; }
+
+  /* ---------- links section ---------- */
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+  .links li {
+    border-bottom: 1px solid var(--rule);
+    padding: .9rem 0;
+  }
+  .links li:first-child { border-top: 1px solid var(--rule); }
+  .links li:last-child { border-bottom: 0; }
+  .links a { font-weight: 600; text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  .links .what {
+    display: block;
+    color: var(--muted);
+    font-size: .95rem;
+    font-weight: 400;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--rule);
+    color: var(--muted);
+    font-size: .92rem;
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 18px; }
+    .page { padding: 2rem 1rem 4rem; }
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1.4rem; }
+    .levels .l2 { margin-left: 1rem; }
+    .levels .l3 { margin-left: 2rem; }
+    .levels .l2 + .arm { margin-left: 2.2rem; }
+  }
+
+  @media print {
+    body { font-size: 11pt; background: #fff; }
+    .page { max-width: none; padding: 0; }
+    nav.toc { display: none; }
+    h2 { margin-top: 2rem; }
+    figure, ol.steps > li, .note, .warn { break-inside: avoid; }
+    a { color: var(--ink); }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <h1>Getting started</h1>
+  <p class="subtitle">A guide for the museum team. No technical knowledge needed —
+  if you can fill in a paper form, you can do everything on this page.</p>
+
+  <p class="lede">The mobile app your visitors use is an <strong>empty shell</strong>. It carries
+  no text, no photo and no audio guide of its own. Everything — even the name of the museum, its
+  logo and its colours — comes from one website that belongs to you: the <strong>dashboard</strong>.</p>
+
+  <p>What you save in the dashboard reaches the visitors' phones <strong>within a minute</strong>.
+  Nobody has to update anything, and you never have to go through Apple or Google again.</p>
+
+  <nav class="toc">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#words">The five words to know</a></li>
+      <li><a href="#login">Signing in</a></li>
+      <li><a href="#tour">A tour of the dashboard</a></li>
+      <li><a href="#levels">How the content is organised</a></li>
+      <li><a href="#setup">Setting up a museum, from empty to open</a></li>
+      <li><a href="#artwork">Adding one artwork, step by step</a></li>
+      <li><a href="#rules">Four rules that keep you safe</a></li>
+      <li><a href="#trouble">"The app doesn't show my change"</a></li>
+      <li><a href="#backups">Backups</a></li>
+      <li><a href="#links">Useful links</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================================ -->
+  <h2 id="words"><span class="num">1.</span> The five words to know</h2>
+
+  <p>The dashboard uses a handful of words over and over. Here is what each one means,
+  in plain language.</p>
+
+  <table>
+    <tr>
+      <th>The word</th>
+      <th>What it really means</th>
+    </tr>
+    <tr>
+      <td><strong>Dashboard</strong></td>
+      <td>The website where you work. Its address ends in <code>/_/</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Collection</strong></td>
+      <td>A drawer holding one kind of thing. There is a drawer for artworks, one for
+      exhibitions, one for rooms, and so on. They are listed down the left-hand side.</td>
+    </tr>
+    <tr>
+      <td><strong>Record</strong></td>
+      <td>One card inside a drawer: one artwork, one exhibition, one room.</td>
+    </tr>
+    <tr>
+      <td><strong>Field</strong></td>
+      <td>One box to fill in on a card: the artist, the year, the photo.</td>
+    </tr>
+    <tr>
+      <td><strong>Published</strong></td>
+      <td>A small switch on a card. Off, visitors see nothing. On, they see it.
+      This is your safety net.</td>
+    </tr>
+  </table>
+
+  <!-- ============================================================ -->
+  <h2 id="login"><span class="num">2.</span> Signing in</h2>
+
+  <p>Whoever installed the server for you gave you three things: an <strong>address</strong>
+  ending in <code>/_/</code>, an <strong>email address</strong> and a <strong>password</strong>.
+  Open the address in your usual web browser and you will see this:</p>
+
+  <figure>
+    <img class="narrow" src="images/login.png" alt="The dashboard sign-in screen, with an Email box, a Password box and a Login button.">
+    <figcaption>The sign-in screen. "Superuser" simply means "the person allowed to edit".</figcaption>
+  </figure>
+
+  <p>Type your email and your password, then click <span class="ui">Login</span>.</p>
+
+  <div class="note">
+    <span class="label">Do this once, thank yourself daily</span>
+    <p>Add the address to your browser's bookmarks (or favourites) the very first time.
+    You will be opening it several times a week, and it is much easier than typing it again.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="tour"><span class="num">3.</span> A tour of the dashboard</h2>
+
+  <p>Everything you need is on one screen. The list on the left is the set of drawers.
+  Click a name, and the middle of the screen shows what is inside it.</p>
+
+  <figure>
+    <img src="images/collections.png" alt="The dashboard, with the list of collections on the left and the artworks listed as rows in the middle.">
+    <figcaption>The <code>artwork</code> drawer, open. Six artworks, one per row.</figcaption>
+  </figure>
+
+  <p>Three things to spot on this screen, and you know your way around:</p>
+
+  <ul class="plain">
+    <li>the <strong>list on the left</strong> — your drawers;</li>
+    <li>the black <span class="ui">+ New record</span> button, top right — this is how you add
+    anything, anywhere;</li>
+    <li>the <strong>rows</strong> in the middle — click any row to open that card and change it.</li>
+  </ul>
+
+  <p>Here is what lives in each drawer. You will only ever use the first ten;
+  the ones grouped under "System" are not yours to touch.</p>
+
+  <table>
+    <tr><th>Drawer</th><th>What goes in it</th></tr>
+    <tr><td><code>museum</code></td><td>The name, subtitle, logo, colours and address of the museum. <strong>One single card</strong>, which you edit but never delete.</td></tr>
+    <tr><td><code>language</code></td><td>The languages your app is offered in.</td></tr>
+    <tr><td><code>floor</code></td><td>The floors of the building, each with its map image.</td></tr>
+    <tr><td><code>room</code></td><td>The rooms, each attached to a floor.</td></tr>
+    <tr><td><code>exhibition</code></td><td>The permanent collection and the temporary exhibitions.</td></tr>
+    <tr><td><code>exhibition_translation</code></td><td>The title and introduction of an exhibition, in one language.</td></tr>
+    <tr><td><code>artwork</code></td><td>The artworks: label information, photos, position on the map.</td></tr>
+    <tr><td><code>artwork_translation</code></td><td>The title, the text and the audio guide of an artwork, in one language.</td></tr>
+    <tr><td><code>page</code></td><td>Information pages: opening hours, prices, accessibility.</td></tr>
+    <tr><td><code>page_translation</code></td><td>The content of an information page, in one language.</td></tr>
+  </table>
+
+  <!-- ============================================================ -->
+  <h2 id="levels"><span class="num">4.</span> How the content is organised</h2>
+
+  <p>Everything the visitor reads sits on three levels, one inside the other:</p>
+
+  <div class="levels">
+    <div class="box">
+      <div class="name">Exhibition</div>
+      <div class="ex">"Permanent collection"</div>
+    </div>
+    <div class="arm"></div>
+    <div class="box l2">
+      <div class="name">Artwork</div>
+      <div class="ex">"Narrow-necked jug", no. 12, Room of origins</div>
+    </div>
+    <div class="arm"></div>
+    <div class="box l3">
+      <div class="name">Translation</div>
+      <div class="ex">Its title, its text and its audio guide — in <em>one</em> language</div>
+    </div>
+  </div>
+
+  <p>Two consequences, and they explain nine problems out of ten:</p>
+
+  <ul class="plain">
+    <li><strong>An artwork holds no text of its own.</strong> The title and the description live
+    in the translation. An artwork with no translation shows up empty.</li>
+    <li><strong>One translation per language.</strong> An artwork presented in English and in
+    French needs two translation cards. That is on purpose: the English audio guide is a
+    different sound file from the French one, it cannot be shared.</li>
+  </ul>
+
+  <!-- ============================================================ -->
+  <h2 id="setup"><span class="num">5.</span> Setting up a museum, from empty to open</h2>
+
+  <p>If your dashboard is brand new, follow these seven stages <strong>in this order</strong>.
+  The order matters: an artwork has to be attached to an exhibition, so the exhibition must
+  exist first. Working backwards means going over the same cards twice.</p>
+
+  <p>Do not try to do it all in one afternoon. Each stage can be left half-finished and picked
+  up next week — as long as nothing is published, nobody sees the work in progress.</p>
+
+  <ol class="steps">
+
+    <li>
+      <h3>The languages</h3>
+      <p>Drawer <code>language</code>. One card per language you intend to publish in: the
+      <strong>code</strong> (<code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>…)
+      and the <strong>label</strong>, which is the name of the language
+      <em>written in that language</em>: <code>English</code>, <code>Français</code>,
+      <code>Deutsch</code>.</p>
+      <p>Leave the <code>active</code> switch off until the essentials are actually translated.
+      A language that exists but has no texts behind it shows visitors nothing but empty pages.</p>
+    </li>
+
+    <li>
+      <h3>The museum itself</h3>
+      <p>Drawer <code>museum</code>. There is already <strong>one card</strong> there — click
+      the row to open it. This is where the app gets its identity: the name, the subtitle, the
+      logo, the home image, the two colours, the default language, the address and the map
+      coordinates.</p>
+      <figure>
+        <img src="images/museum-form.png" alt="The museum card open, showing the name, subtitle, logo, cover image and primary colour fields.">
+        <figcaption>The museum card. Fill it in, then click <span class="ui">Save changes</span>.</figcaption>
+      </figure>
+      <p>The colours are written in the <code>#RRGGBB</code> form — <code>#2A4B9B</code> for a
+      cobalt blue. If you do not have your museum's colour codes to hand, whoever made your
+      signage or your website will.</p>
+    </li>
+
+    <li>
+      <h3>The floors, then the rooms</h3>
+      <p>Drawer <code>floor</code>: one card per level, with its <strong>map image</strong> and
+      its <strong>level</strong> number — <code>0</code> for the ground floor, <code>1</code> for
+      the first floor, <code>-1</code> for a basement.</p>
+      <p>Then drawer <code>room</code>: one card per room, each attached to its floor, with the
+      short code shown in the app (<code>R1</code>, <code>S3</code>…).</p>
+    </li>
+
+    <li>
+      <h3>The exhibitions</h3>
+      <p>Drawer <code>exhibition</code>, then <span class="ui">+ New record</span>.</p>
+      <figure>
+        <img src="images/exhibition-form.png" alt="The form for a new exhibition, with slug, cover, colour, is_permanent switch and dates.">
+        <figcaption>A new exhibition. The grey line under each box explains what it is for.</figcaption>
+      </figure>
+      <ul class="plain">
+        <li><strong>slug</strong> — a short name in lowercase-with-dashes,
+        like <code>cobalt-blue</code>. It is how the exhibition is recognised;
+        <strong>never change it once the exhibition is published</strong>.</li>
+        <li><strong>cover</strong> — the cover image.</li>
+        <li><strong>color</strong> — optional. Give a temporary exhibition the colour of its
+        poster and the app tints its screens to match. Leave it empty to keep the museum's
+        own colour.</li>
+        <li><strong>is_permanent</strong> — on for the permanent collection; the dates are then
+        ignored. Off for a temporary exhibition, and you fill in the dates.</li>
+        <li><strong>rooms</strong> — the rooms it occupies.</li>
+      </ul>
+      <p>Then, in <code>exhibition_translation</code>, one card per language with the title,
+      the subtitle and the introduction.</p>
+    </li>
+
+    <li>
+      <h3>The artworks</h3>
+      <p>This is the long stage — the one you will come back to for years.
+      It has its own walkthrough just below: <a href="#artwork">Adding one artwork,
+      step by step</a>.</p>
+    </li>
+
+    <li>
+      <h3>The information pages</h3>
+      <p>Drawer <code>page</code>: opening hours, prices, accessibility, legal notices.
+      Each page needs a <strong>slug</strong> and, in <code>page_translation</code>,
+      one card per language.</p>
+      <p>Each page can carry a small icon. Its name comes from Apple's icon list
+      (<code>info.circle</code>, <code>clock</code>, <code>figure.roll</code>). If in doubt,
+      leave it empty or ask whoever installed the server.</p>
+    </li>
+
+    <li>
+      <h3>Open the doors</h3>
+      <p>Go back over the exhibitions and the artworks and turn on their
+      <strong>published</strong> switch. Then switch on the languages in
+      <code>language</code>.</p>
+      <p>Open the app on a phone: everything should be there within a minute.</p>
+    </li>
+
+  </ol>
+
+  <!-- ============================================================ -->
+  <h2 id="artwork"><span class="num">6.</span> Adding one artwork, step by step</h2>
+
+  <p>This is the task you will do most often. It always takes two cards: the artwork itself,
+  then its text in each language.</p>
+
+  <h3>Part one — the artwork</h3>
+
+  <ol class="steps">
+
+    <li>
+      <h3>Open the drawer and start a card</h3>
+      <p>Click <code>artwork</code> on the left, then the black
+      <span class="ui">+ New record</span> button at the top right. A panel slides in from
+      the right: this is your blank card.</p>
+      <figure>
+        <img src="images/artwork-form-top.png" alt="The panel for a new artwork, showing the id, exhibition, room, pos_x, pos_y and code fields.">
+        <figcaption>The top half of a new artwork card.</figcaption>
+      </figure>
+      <p>Leave <strong>id</strong> alone — the system fills it in for you.</p>
+    </li>
+
+    <li>
+      <h3>Choose the exhibition</h3>
+      <p>Click <span class="ui">Open records picker</span> under <strong>exhibition</strong>.
+      A small window lists your exhibitions. Tick the right one, then click
+      <span class="ui">Set selection</span>.</p>
+      <figure>
+        <img src="images/records-picker.png" alt="The picker window listing two exhibitions with a radio button each, and a Set selection button.">
+        <figcaption>Picking the exhibition. The same window appears wherever one card has to point at another.</figcaption>
+      </figure>
+      <p>This field is compulsory — the little red star says so. Do the same for
+      <strong>room</strong>, which is optional but worth filling in.</p>
+    </li>
+
+    <li>
+      <h3>The number on the label</h3>
+      <p><strong>code</strong> is the number printed on the wall label, the one the visitor
+      types into the app to jump straight to this artwork — for example <code>12</code>.</p>
+      <p>Digits and capital letters only, and <strong>never the same code twice</strong> in
+      the whole museum.</p>
+    </li>
+
+    <li>
+      <h3>The label information</h3>
+      <p><strong>artist</strong>, <strong>year</strong>, <strong>technique</strong>,
+      <strong>inventory_number</strong>: exactly what is written on the wall label.</p>
+      <p><strong>year</strong> is free text, so "1889", "around 1500" and "18th century" are
+      all perfectly fine.</p>
+    </li>
+
+    <li>
+      <h3>The photographs</h3>
+      <p>Click <span class="ui">Upload or drop new file</span> under <strong>images</strong>,
+      and pick your photos — up to ten, 15 MB each.</p>
+      <figure>
+        <img src="images/artwork-form-bottom.png" alt="The bottom half of the artwork card: artist, year, technique, inventory number, images upload, sort and the published switch.">
+        <figcaption>The bottom half of the card, ending with the <strong>published</strong> switch.</figcaption>
+      </figure>
+      <p><strong>The first photo is the one shown in lists</strong>, so put the overall view
+      first and the close-ups after. JPEG is best, at least 1600 pixels on the long side.</p>
+    </li>
+
+    <li>
+      <h3>The position on the map (optional)</h3>
+      <p><strong>pos_x</strong> and <strong>pos_y</strong> place the artwork on the floor map.
+      They are fractions of the map image, not metres:</p>
+      <ul class="plain">
+        <li><strong>pos_x</strong>: <code>0</code> at the left edge, <code>0.5</code> in the
+        middle, <code>1</code> at the right edge;</li>
+        <li><strong>pos_y</strong>: <code>0</code> at the top, <code>0.5</code> in the middle,
+        <code>1</code> at the bottom.</li>
+      </ul>
+      <p>Open the map image, find the spot by eye, and estimate. An artwork in the centre of the
+      map is at <code>0.5</code> and <code>0.5</code>. Two decimals are plenty — nobody will
+      notice the difference between <code>0.25</code> and <code>0.26</code>.</p>
+    </li>
+
+    <li>
+      <h3>Publish, and create</h3>
+      <p>Turn on the <strong>published</strong> switch at the bottom, then click the black
+      <span class="ui">Create</span> button.</p>
+      <p>Not ready to show it yet? Leave the switch off. The card is saved all the same and
+      stays invisible to visitors until you come back and switch it on.</p>
+    </li>
+
+  </ol>
+
+  <h3>Part two — the text and the audio guide</h3>
+
+  <p>The artwork now exists, but it is still mute. Open the drawer
+  <code>artwork_translation</code> and click <span class="ui">+ New record</span>.</p>
+
+  <figure>
+    <img src="images/translation-form.png" alt="The form for a new translation, with the artwork picker, the language picker, the title and a rich text editor.">
+    <figcaption>A translation card: one artwork, one language, one text.</figcaption>
+  </figure>
+
+  <ul class="plain">
+    <li><strong>artwork</strong> — the artwork you have just created, through
+    <span class="ui">Open records picker</span>.</li>
+    <li><strong>language</strong> — the language <em>this</em> text is written in.</li>
+    <li><strong>title</strong> — the title of the work in that language. Compulsory.</li>
+    <li><strong>text</strong> — the long description. The little toolbar gives you bold,
+    italic, paragraphs and lists, like in a word processor.</li>
+    <li><strong>audio</strong> — the audio guide file for this language, up to 25 MB.
+    <strong>Prefer MP3</strong>: at the same quality it is five to ten times lighter than a
+    WAV, which matters a great deal to a visitor listening over mobile data.</li>
+    <li><strong>audio_duration</strong> — the length in seconds, shown before playing.
+    Optional.</li>
+  </ul>
+
+  <p>Click <span class="ui">Create</span>. Then start again for the next language.</p>
+
+  <div class="note">
+    <span class="label">A rhythm that works</span>
+    <p>Enter your artworks in batches: ten artwork cards first, then their ten English texts,
+    then their ten French texts. Doing the same gesture ten times in a row is far quicker,
+    and far less error-prone, than juggling three drawers for every single work.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <h2 id="rules"><span class="num">7.</span> Four rules that keep you safe</h2>
+
+  <div class="warn">
+    <span class="label">Unpublishing hides. Deleting destroys.</span>
+    <p><strong>Deleting an exhibition deletes every artwork inside it</strong>, along with their
+    texts and their audio guides. It happens instantly and it cannot be undone.</p>
+    <p>To take something out of the app without losing anything, <strong>turn off its
+    published switch</strong>. It disappears from the app and stays whole in the dashboard.
+    Use this. Deleting is almost never what you actually want.</p>
+  </div>
+
+  <p><strong>Nothing is visible until <code>published</code> is on.</strong> That is what lets
+  you prepare a whole exhibition for months, in full, without a single visitor seeing it.</p>
+
+  <p><strong>Never change a <code>slug</code> once it is published.</strong> It is the permanent
+  name of an exhibition or a page. Changing the title displayed to visitors is fine and
+  encouraged; changing the slug breaks the link.</p>
+
+  <p><strong>An artwork with no translation shows nothing.</strong> If you only have time for
+  one thing, create the translation in your main language — the photo and the label alone are
+  an empty page.</p>
+
+  <!-- ============================================================ -->
+  <h2 id="trouble"><span class="num">8.</span> "The app doesn't show my change"</h2>
+
+  <p>Check these four, in this order. It is almost always one of them.</p>
+
+  <ol class="steps">
+    <li>
+      <h3>The published switch is off</h3>
+      <p>On the artwork <strong>or on its exhibition</strong>. A published artwork inside an
+      unpublished exhibition stays invisible — the exhibition hides everything it contains.</p>
+    </li>
+    <li>
+      <h3>The translation is missing</h3>
+      <p>The phone is set to a language you have not translated this artwork into.
+      Check the <code>artwork_translation</code> drawer.</p>
+    </li>
+    <li>
+      <h3>The language is switched off</h3>
+      <p>The language exists in the <code>language</code> drawer, but its <code>active</code>
+      switch is off.</p>
+    </li>
+    <li>
+      <h3>The app is a minute behind</h3>
+      <p>Close the app completely — not just back to the home screen — and open it again.</p>
+    </li>
+  </ol>
+
+  <p>If none of that explains it, contact whoever installed the server for you, and tell them
+  <strong>the name of the artwork and the language concerned</strong>. Those two details save
+  a great deal of back and forth.</p>
+
+  <!-- ============================================================ -->
+  <h2 id="backups"><span class="num">9.</span> Backups</h2>
+
+  <p>A museum's content represents weeks of typing. That, far more than any server failure,
+  is the real risk.</p>
+
+  <figure>
+    <img src="images/backups.png" alt="The Backups page of the dashboard settings, with an Initialize new backup button and backup options.">
+    <figcaption><span class="ui">Settings</span> → <span class="ui">Backups</span>.</figcaption>
+  </figure>
+
+  <p>Automatic backups are normally set up for you when the server is installed.
+  Ask whoever did it to confirm two things: that backups run automatically,
+  and that they are stored <strong>somewhere other than the server itself</strong>.</p>
+
+  <p>Before a big operation — a mass import, a clean-up, anything that makes you slightly
+  nervous — you can also click <span class="ui">Initialize new backup</span> to take one
+  yourself, there and then.</p>
+
+  <!-- ============================================================ -->
+  <h2 id="links"><span class="num">10.</span> Useful links</h2>
+
+  <ul class="links">
+    <li>
+      <a href="CONTENT-GUIDE.md">The content guide</a>
+      <span class="what">Every field, one by one, with its accepted formats and its limits.
+      The reference to keep open beside you when a box puzzles you.</span>
+    </li>
+    <li>
+      <a href="../README.md">The technical README</a>
+      <span class="what">Installing, deploying and maintaining the server.
+      For whoever looks after your machine — you should not need it.</span>
+    </li>
+    <li>
+      <a href="https://pocketbase.io/docs/">PocketBase documentation</a>
+      <span class="what">The software the dashboard is built on. Useful to your provider,
+      rarely to you.</span>
+    </li>
+    <li>
+      <a href="https://github.com/lebojo/LibreMuseum-pocketbase">The project on GitHub</a>
+      <span class="what">The source code, and where to report a problem.</span>
+    </li>
+  </ul>
+
+  <footer>
+    <p>Screenshots taken on a demo museum. Your own dashboard will show your collections,
+    but every button is in the same place.</p>
+  </footer>
+
+</main>
+</body>
+</html>

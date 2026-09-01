@@ -93,7 +93,9 @@ pb_hooks/         Server logic in JS, hot-reloaded.
   lib/content.js    Bundle building and version computation
 seed/             Demo museum (content + generated media)
 scripts/          dev.sh (working database), test.sh (disposable database)
-docs/             Content guide aimed at the museum staff
+docs/             Documentation for the museum staff
+  getting-started.html  Illustrated walkthrough, opens in a browser
+  CONTENT-GUIDE.md      Field-by-field reference
 ```
 
 ## Evolving the schema
