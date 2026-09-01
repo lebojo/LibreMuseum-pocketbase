@@ -81,11 +81,45 @@ five to ten times less than a WAV, which makes all the difference for a visitor 
   colour of its poster. Leave it empty to keep the museum's accent colour.
 - **is_permanent** — tick for a permanent collection; the dates are then ignored
 - **start_date** / **end_date** — for a temporary exhibition
+- **requires_ticket** — tick if a ticket is needed to see this exhibition. See
+  "Making an exhibition paying" below. Left unticked, the exhibition is free, which is the
+  case of most of them.
+- **unlock_code** — the code that unlocks it, only useful when the box above is ticked
 - **rooms** — the rooms occupied
 - **published**
 
 Then one row in **`exhibition_translation`** per language, with title, subtitle, introduction
 text and, if you have one, the audio introduction.
+
+## Making an exhibition paying
+
+Tick **requires_ticket** on the exhibition, then fill in **unlock_code**.
+
+The visitor who opens a paying exhibition in the app sees its cover, its title and its
+description — enough to want to come in. The artworks are there in the list, but their photo is
+blurred, their title is cut off and a padlock replaces the arrow. Tapping one says: buy your
+ticket at the museum and scan the QR code to unlock.
+
+**The code is what you print on the ticket, as a QR code.** Choose whatever text you want —
+`COBALT2026`, `BLEU-2026`, a series of digits. Any QR code generator on the web produces the
+image from that text; you paste it into your ticket layout. Nothing to install, nothing to ask
+your provider for.
+
+Two things to know before you print:
+
+- **One code per exhibition.** Scanning the cobalt-blue code unlocks the cobalt-blue exhibition,
+  not the others. A visitor who bought two exhibitions scans two QR codes.
+- **Changing the code invalidates the tickets already printed.** Only change it between two
+  exhibitions, never during one.
+
+How long a scan lasts is set once for the whole museum, in the **`museum`** collection:
+**ticket_validity_hours**. `4` means the visitor's phone stays unlocked for four hours after the
+scan, then asks for the code again. Leave the field empty or at `0` and a scan never expires —
+which suits a season ticket, less so a day ticket.
+
+> This padlock discourages, it does not protect. Someone technical enough could read the content
+> without a ticket, because the app has to work without any visitor account. It is there so that
+> an honest visitor buys their ticket, not to fight a determined one.
 
 ## Placing an artwork on the map
 
@@ -110,7 +144,7 @@ Simple method: open the map image, spot the artwork by eye, estimate the fractio
 duplicate — the system will refuse both anyway.
 
 There you set the displayed name, the subtitle, the logo, the home image, the app's two colours,
-the default language, the coordinates and the address.
+the default language, how long a scanned ticket lasts, the coordinates and the address.
 
 These two colours are the app's default. An exhibition that carries its own `color` overrides the
 accent colour on its own screens only.

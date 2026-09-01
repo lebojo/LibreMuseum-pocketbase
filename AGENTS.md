@@ -99,6 +99,12 @@ bundles cached on phones.
 **`published = false` must stay invisible** everywhere: in the collections' API rules as well as
 in the bundle filtering. It is the museum's safety net for preparing an exhibition.
 
+**The ticket lock is an honesty barrier, not a protection.** `exhibition.unlock_code` is compared
+on the device, so it is served like any other field: the artworks of a paying exhibition stay
+readable through the public API, as they must be for an app with no visitor account. The flag is
+`requires_ticket` and not `free` because a PocketBase boolean is false by default: unchecked has
+to mean "nothing changes".
+
 **One single `museum` record per instance**, guaranteed by `pb_hooks/main.pb.js`, which also
 refuses its deletion.
 

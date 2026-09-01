@@ -127,6 +127,7 @@ function buildBundle(app, version) {
       primary_color: m.getString("primary_color"),
       accent_color: m.getString("accent_color"),
       default_lang: langCodeById[m.getString("default_lang")] || "",
+      ticket_validity_hours: m.getInt("ticket_validity_hours"),
       website: m.getString("website"),
       email: m.getString("email"),
       phone: m.getString("phone"),
@@ -215,6 +216,8 @@ function buildBundle(app, version) {
         start_date: dateString(e, "start_date"),
         end_date: dateString(e, "end_date"),
         rooms: e.getStringSlice("rooms"),
+        requires_ticket: e.getBool("requires_ticket"),
+        unlock_code: e.getString("unlock_code"),
         sort: e.getInt("sort"),
         translations: exhibitionTranslations[e.id] || {},
       };

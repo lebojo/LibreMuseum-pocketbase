@@ -77,6 +77,7 @@ $app.rootCmd.addCommand(
       museum.set("primary_color", m.primary_color);
       museum.set("accent_color", m.accent_color);
       museum.set("default_lang", langByCode[m.default_lang].id);
+      museum.set("ticket_validity_hours", m.ticket_validity_hours);
       museum.set("website", m.website);
       museum.set("email", m.email);
       museum.set("phone", m.phone);
@@ -121,6 +122,8 @@ $app.rootCmd.addCommand(
           "rooms",
           (e.rooms || []).map((key) => roomByKey[key].id),
         );
+        record.set("requires_ticket", e.requires_ticket);
+        record.set("unlock_code", e.unlock_code);
         record.set("sort", e.sort);
         record.set("published", e.published);
         $app.save(record);
