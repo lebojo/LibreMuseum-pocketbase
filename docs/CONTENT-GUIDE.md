@@ -43,6 +43,8 @@ Two rules to remember:
      `year` is free text: "1889", "around 1500", "18th century".
    - **images** — up to 10 photos, 15 MB each. **The first one is used as the thumbnail** in
      lists: put the overall photo first, not a detail.
+     JPEG or WebP (PNG is accepted), **at least 1600 px on the long side**, 2400 px is plenty:
+     below that the app has to enlarge the photo and it shows, above it nothing is gained.
    - **pos_x** / **pos_y** — see "Placing an artwork on the map" below. Optional.
    - **sort** — to force the display order (0 first). Leave it at 0 if the order does not matter
      to you.
