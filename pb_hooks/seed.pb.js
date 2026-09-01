@@ -113,6 +113,7 @@ $app.rootCmd.addCommand(
         const record = new Record($app.findCollectionByNameOrId("exhibition"));
         record.set("slug", e.slug);
         record.set("cover", asset(e.cover));
+        record.set("color", e.color);
         record.set("is_permanent", e.is_permanent);
         if (e.start_date) record.set("start_date", e.start_date);
         if (e.end_date) record.set("end_date", e.end_date);

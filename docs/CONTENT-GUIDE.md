@@ -74,6 +74,9 @@ five to ten times less than a WAV, which makes all the difference for a visitor 
 - **slug** — an identifier in lowercase-with-dashes (`cobalt-blue`).
   **Do not change it once the exhibition is published**: it is what identifies the exhibition.
 - **cover** — the cover image
+- **color** — the exhibition's colour code, in `#RRGGBB` format (`#2A4B9B` for a cobalt blue).
+  The app uses it to tint the exhibition's screens, which lets a temporary exhibition carry the
+  colour of its poster. Leave it empty to keep the museum's accent colour.
 - **is_permanent** — tick for a permanent collection; the dates are then ignored
 - **start_date** / **end_date** — for a temporary exhibition
 - **rooms** — the rooms occupied
@@ -106,6 +109,9 @@ duplicate — the system will refuse both anyway.
 
 There you set the displayed name, the subtitle, the logo, the home image, the app's two colours,
 the default language, the coordinates and the address.
+
+These two colours are the app's default. An exhibition that carries its own `color` overrides the
+accent colour on its own screens only.
 
 ## Adding an information page
 

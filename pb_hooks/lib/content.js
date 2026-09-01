@@ -210,6 +210,7 @@ function buildBundle(app, version) {
         id: e.id,
         slug: e.getString("slug"),
         cover: fileUrl("exhibition", e.id, e.getString("cover")),
+        color: e.getString("color"),
         is_permanent: e.getBool("is_permanent"),
         start_date: dateString(e, "start_date"),
         end_date: dateString(e, "end_date"),
