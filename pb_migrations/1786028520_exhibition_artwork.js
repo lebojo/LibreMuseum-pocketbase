@@ -134,7 +134,7 @@ migrate(
           type: "file",
           name: "images",
           maxSelect: 10,
-          maxSize: 15728640, // 15 Mo par image
+          maxSize: 15728640, // 15 MB per image
           mimeTypes: ["image/png", "image/jpeg", "image/webp"],
           thumbs: ["200x200", "800x0", "1600x0"],
           help: "The first image is used as the thumbnail in lists.",
