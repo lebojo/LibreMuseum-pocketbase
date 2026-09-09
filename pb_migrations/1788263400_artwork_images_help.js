@@ -19,7 +19,7 @@ migrate(
     // thumbnails.
     artwork.fields.getByName("images").help =
       "The first image is used as the thumbnail in lists: put the overall photo first, not a detail. " +
-      "JPEG or WebP preferred (PNG accepted), at least 1600 px on the long side, 2400 px is plenty. 15 MB max per image.";
+      "JPEG or WebP preferred (PNG accepted), at least 1600 px on the long side, 2400 px is plenty. 5 MB max per image.";
 
     app.save(artwork);
   },
