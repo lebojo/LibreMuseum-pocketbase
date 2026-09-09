@@ -9,6 +9,12 @@
 // 25 MB: a 3-minute audio guide track in 128k MP3 weighs ~3 MB, but museums
 // often provide WAV or high-quality MP3.
 const AUDIO_MAX_SIZE = 26214400;
+
+// 5 MB: every photograph reaches the app through thumbnails capped at 1600 px,
+// so beyond that the extra weight only slows down the upload over the museum's
+// connection. The floor map is the exception, see the `map` migration: it is a
+// scan displayed at full size for the visitor to zoom into.
+const IMAGE_MAX_SIZE = 5242880;
 const AUDIO_MIME_TYPES = [
   "audio/mpeg",
   "audio/mp4",
@@ -45,9 +51,12 @@ migrate(
           type: "file",
           name: "cover",
           maxSelect: 1,
-          maxSize: 10485760,
+          maxSize: IMAGE_MAX_SIZE,
           mimeTypes: ["image/png", "image/jpeg", "image/webp"],
           thumbs: ["400x300", "1200x0"],
+          help:
+            "Image announcing the exhibition in the app. JPEG or WebP (PNG accepted), " +
+            "at least 1200 px on the long side. 5 MB max.",
         },
         {
           type: "bool",
@@ -134,7 +143,7 @@ migrate(
           type: "file",
           name: "images",
           maxSelect: 10,
-          maxSize: 15728640, // 15 MB per image
+          maxSize: IMAGE_MAX_SIZE,
           mimeTypes: ["image/png", "image/jpeg", "image/webp"],
           thumbs: ["200x200", "800x0", "1600x0"],
           help: "The first image is used as the thumbnail in lists.",

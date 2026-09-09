@@ -66,9 +66,12 @@ migrate(
           type: "file",
           name: "cover",
           maxSelect: 1,
-          maxSize: 10485760, // 10 MB
+          maxSize: 5242880, // 5 MB
           mimeTypes: ["image/png", "image/jpeg", "image/webp"],
           thumbs: ["600x0", "1200x0"],
+          help:
+            "Image shown at the top of the app's home screen. JPEG or WebP (PNG accepted), " +
+            "at least 1200 px on the long side. 5 MB max.",
         },
         {
           type: "text",

@@ -41,7 +41,7 @@ Two rules to remember:
      Digits and capitals only, and never twice the same in the museum.
    - **artist**, **year**, **technique**, **inventory_number** — the information on the label.
      `year` is free text: "1889", "around 1500", "18th century".
-   - **images** — up to 10 photos, 15 MB each. **The first one is used as the thumbnail** in
+   - **images** — up to 10 photos, 5 MB each. **The first one is used as the thumbnail** in
      lists: put the overall photo first, not a detail.
      JPEG or WebP (PNG is accepted), **at least 1600 px on the long side**, 2400 px is plenty:
      below that the app has to enlarge the photo and it shows, above it nothing is gained.
@@ -75,7 +75,7 @@ five to ten times less than a WAV, which makes all the difference for a visitor 
 
 - **slug** — an identifier in lowercase-with-dashes (`cobalt-blue`).
   **Do not change it once the exhibition is published**: it is what identifies the exhibition.
-- **cover** — the cover image
+- **cover** — the cover image, 5 MB max
 - **color** — the exhibition's colour code, in `#RRGGBB` format (`#2A4B9B` for a cobalt blue).
   The app uses it to tint the exhibition's screens, which lets a temporary exhibition carry the
   colour of its poster. Leave it empty to keep the museum's accent colour.
