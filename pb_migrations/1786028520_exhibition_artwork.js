@@ -61,6 +61,19 @@ migrate(
             "at least 1200 px on the long side. 5 MB max.",
         },
         {
+          type: "text",
+          name: "color",
+          max: 9,
+          // Same format and same validation as `museum.primary_color`: one
+          // single notation to explain to the staff. Optional on purpose - left
+          // empty, the app falls back to the museum's `accent_color`, so a
+          // museum that does not want to think about colours has nothing to
+          // fill in. It is what lets a temporary exhibition carry the graphic
+          // identity of its poster without an app update.
+          pattern: "^#[0-9a-fA-F]{6}$",
+          help: "Colour of the exhibition, in #RRGGBB format. Empty = the museum's accent colour.",
+        },
+        {
           type: "bool",
           name: "is_permanent",
           help: "Permanent collection: the start and end dates are then ignored.",
@@ -74,6 +87,36 @@ migrate(
           maxSelect: 20,
           cascadeDelete: false,
           help: "Rooms occupied by the exhibition.",
+        },
+        // Paying exhibitions: the app shows the description, then locks the
+        // artworks behind a code the visitor scans from the ticket sold at the
+        // desk. These two read as part of the exhibition, before `sort` and
+        // `published` which close every content form.
+        //
+        // The flag is `requires_ticket`, not `free`. A PocketBase boolean is
+        // false by default and cannot be otherwise: a `free` checkbox would
+        // turn every exhibition into a paying one until someone remembers to
+        // tick it. Unchecked must mean "nothing changes", so the checkbox says
+        // what it adds.
+        //
+        // The lock is an honesty barrier, not a copy protection: the artworks
+        // stay readable through the public REST API, as they must be for the
+        // app to work without an account. It stops a visitor from browsing
+        // instead of buying a ticket; it does not stop someone determined.
+        {
+          type: "bool",
+          name: "requires_ticket",
+          help:
+            "Tick this if a ticket is needed to see the artworks. The app then shows only the " +
+            "description of the exhibition, and asks the visitor to scan the code below.",
+        },
+        {
+          type: "text",
+          name: "unlock_code",
+          max: 64,
+          help:
+            "Code to unlock: the text to put in the QR code printed on the ticket. Choose whatever " +
+            "you like (e.g. \"MONET2026\"). Scanning it opens this exhibition on the visitor's phone.",
         },
         { type: "number", name: "sort", onlyInt: true },
         { type: "bool", name: "published" },
@@ -160,7 +203,20 @@ migrate(
           maxSize: IMAGE_MAX_SIZE,
           mimeTypes: ["image/png", "image/jpeg", "image/webp"],
           thumbs: ["200x200", "800x0", "1600x0"],
-          help: "The first image is used as the thumbnail in lists.",
+          // The staff photograph the artworks themselves, with what they have
+          // on hand: either a phone shot too small to fill a screen, or a 40 MP
+          // archival scan the uploader rejects. The format and the size are
+          // enforced by `mimeTypes` and `maxSize`, but unless the field says so
+          // the answer arrives only as an error message - or two months later
+          // as a blurry app.
+          //
+          // 1600 px is the largest thumbnail generated here: below that, the
+          // app enlarges the photo and it shows on a full-screen view. Above
+          // ~2400 px nothing is gained, since every size served comes from the
+          // thumbnails.
+          help:
+            "The first image is used as the thumbnail in lists: put the overall photo first, not a detail. " +
+            "JPEG or WebP preferred (PNG accepted), at least 1600 px on the long side, 2400 px is plenty. 5 MB max per image.",
         },
         { type: "number", name: "sort", onlyInt: true },
         { type: "bool", name: "published" },
