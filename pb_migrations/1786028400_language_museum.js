@@ -96,6 +96,18 @@ migrate(
           cascadeDelete: false,
           help: "Language used when the phone's own language is not translated.",
         },
+        {
+          type: "number",
+          name: "ticket_validity_hours",
+          onlyInt: true,
+          // Not required: `0` is a legitimate value and a required number field
+          // rejects it. Empty or 0 therefore means "never expires", which is
+          // also what a museum that has not thought about it gets.
+          min: 0,
+          help:
+            "How many hours a scanned ticket keeps the exhibitions unlocked on the phone. " +
+            "Leave empty or 0 so that a scan never expires.",
+        },
         { type: "url", name: "website" },
         { type: "email", name: "email" },
         { type: "text", name: "phone", max: 40 },
