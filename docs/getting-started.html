@@ -416,7 +416,7 @@
     <tr><td><code>room</code></td><td>The rooms, each attached to a floor.</td></tr>
     <tr><td><code>exhibition</code></td><td>The permanent collection and the temporary exhibitions.</td></tr>
     <tr><td><code>exhibition_translation</code></td><td>The title and introduction of an exhibition, in one language.</td></tr>
-    <tr><td><code>artwork</code></td><td>The artworks: label information, photos, position on the map.</td></tr>
+    <tr><td><code>artwork</code></td><td>The artworks: label information, photos, position on the map. One artwork may also be a single piece of a larger one — see <a href="#parts">below</a>.</td></tr>
     <tr><td><code>artwork_translation</code></td><td>The title, the text and the audio guide of an artwork, in one language.</td></tr>
     <tr><td><code>page</code></td><td>Information pages: opening hours, prices, accessibility.</td></tr>
     <tr><td><code>page_translation</code></td><td>The content of an information page, in one language.</td></tr>
@@ -453,6 +453,12 @@
     French needs two translation cards. That is on purpose: the English audio guide is a
     different sound file from the French one, it cannot be shared.</li>
   </ul>
+
+  <p>There is <em>one</em> exception to these three levels, and it is not a fourth one. A work
+  made of several pieces — a polyptych, a collage of photographs — is an artwork that holds
+  other artworks, each with its own artist, its own date and its own text. The ladder above
+  stays the rule; this is the special case, and it has
+  <a href="#parts">its own walkthrough</a>.</p>
 
   <!-- ============================================================ -->
   <h2 id="setup"><span class="num">5.</span> Setting up a museum, from empty to open</h2>
@@ -580,10 +586,13 @@
       <span class="ui">Set selection</span>.</p>
       <figure>
         <img src="images/records-picker.png" alt="The picker window listing two exhibitions with a radio button each, and a Set selection button.">
-        <figcaption>Picking the exhibition. The same window appears wherever one card has to point at another.</figcaption>
+        <figcaption>Picking the exhibition. The same window appears wherever one card has to point at another — for the room, and for <code>parent</code>.</figcaption>
       </figure>
-      <p>This field is compulsory — the little red star says so. Do the same for
-      <strong>room</strong>, which is optional but worth filling in.</p>
+      <p>Every artwork needs an exhibition, <em>except</em> one that is a single piece of a
+      larger work: that one gets a <strong>parent</strong> instead, and nothing in
+      <strong>exhibition</strong>. See <a href="#parts">An artwork in several parts</a>. For
+      an ordinary artwork, leave <strong>parent</strong> empty.</p>
+      <p>Then do the same for <strong>room</strong>, which is optional but worth filling in.</p>
     </li>
 
     <li>
@@ -672,13 +681,56 @@
     and far less error-prone, than juggling three drawers for every single work.</p>
   </div>
 
+  <h3 id="parts">An artwork in several parts</h3>
+
+  <p>A polyptych, a collage of photographs, a set of plates hung together: the visitor sees one
+  work under one label, but each piece has its own photographer, its own date and its own story
+  worth telling. You enter it as <strong>several artwork cards</strong>, and the order matters.</p>
+
+  <ol class="steps">
+    <li>
+      <h3>The whole work first</h3>
+      <p>An ordinary artwork card, exactly as above: its <strong>exhibition</strong>, its
+      <strong>room</strong>, its position on the map, the <strong>code</strong> from the wall
+      label, and a photo of the whole thing. Leave <strong>parent</strong> empty.</p>
+      <p>Create it, and give it a translation — this is the card the visitor lands on.</p>
+    </li>
+    <li>
+      <h3>Then one card per piece</h3>
+      <p>A new artwork card for each piece. Fill in <strong>parent</strong> with the whole work
+      through <span class="ui">Open records picker</span>, and leave
+      <strong>exhibition</strong>, <strong>room</strong>, <strong>pos_x</strong> and
+      <strong>pos_y</strong> empty: a piece hangs where its work hangs.</p>
+      <p>Fill in its own <strong>artist</strong>, <strong>year</strong>,
+      <strong>technique</strong> and its own photo — that is the whole point of splitting it —
+      then its translations, like any other artwork.</p>
+      <p>Use <strong>sort</strong> to order the pieces: <code>0</code> for the first panel,
+      <code>1</code> for the second, and so on.</p>
+    </li>
+  </ol>
+
+  <div class="note">
+    <span class="label">The dashboard catches the two easy mistakes</span>
+    <p>An artwork with <strong>neither</strong> an exhibition nor a parent would be saved and
+    then show up nowhere in the app, with nothing to tell you why. One with <strong>both</strong>
+    would leave two answers to the same question. The dashboard refuses each of them and says
+    what to change.</p>
+    <p>It also holds the split to <strong>one level</strong>: a piece cannot itself be broken
+    into pieces.</p>
+  </div>
+
+  <p>Turning <strong>published</strong> off on the whole work hides every one of its pieces at
+  once, even those whose own switch is still on. Deleting it deletes them.</p>
+
   <!-- ============================================================ -->
   <h2 id="rules"><span class="num">7.</span> Four rules that keep you safe</h2>
 
   <div class="warn">
     <span class="label">Unpublishing hides. Deleting destroys.</span>
     <p><strong>Deleting an exhibition deletes every artwork inside it</strong>, along with their
-    texts and their audio guides. It happens instantly and it cannot be undone.</p>
+    texts and their audio guides — and, for a work made of several pieces, every one of its
+    pieces. Deleting such a work on its own takes its pieces with it just the same. It happens
+    instantly and it cannot be undone.</p>
     <p>To take something out of the app without losing anything, <strong>turn off its
     published switch</strong>. It disappears from the app and stays whole in the dashboard.
     Use this. Deleting is almost never what you actually want.</p>
@@ -705,6 +757,8 @@
       <h3>The published switch is off</h3>
       <p>On the artwork <strong>or on its exhibition</strong>. A published artwork inside an
       unpublished exhibition stays invisible — the exhibition hides everything it contains.</p>
+      <p>If the artwork is one piece of a larger work, check the switch on the
+      <strong>whole work</strong> too: it hides all its pieces the same way.</p>
     </li>
     <li>
       <h3>The translation is missing</h3>

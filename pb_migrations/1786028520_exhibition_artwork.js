@@ -1,6 +1,8 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 // Core of the model: exhibition -> artworks, each translated into N languages.
+// An artwork may also group other artworks through `parent`, for a work made of
+// several pieces - see the second `app.save(artwork)` below.
 //
 // Texts and audio live in the `*_translation` collections, not on the artwork
 // itself: an audio guide has a DIFFERENT sound file per language, which a plain
@@ -87,18 +89,25 @@ migrate(
     const artwork = new Collection({
       type: "base",
       name: "artwork",
-      listRule: "published = true && exhibition.published = true",
-      viewRule: "published = true && exhibition.published = true",
+      // Rules and the `parent` index are set after the first save, below: they
+      // name a field that does not exist yet at this point.
       fields: [
         {
           type: "relation",
           name: "exhibition",
-          required: true,
+          // NOT required: an element of a composite work carries `parent`
+          // instead. The main.pb.js hook enforces that exactly one of the two is
+          // filled in - a record with neither would save without complaint, then
+          // show up nowhere, with nothing on the form to explain why.
           collectionId: exhibition.id,
           maxSelect: 1,
           // Deleting an exhibition deletes its artworks, and by cascade their
           // translations. Destructive action: documented in the content guide.
           cascadeDelete: true,
+          help:
+            "The exhibition this artwork belongs to. Leave it empty for an element of a " +
+            "composite work: such an element is attached through `parent` instead, and " +
+            "follows the exhibition of the whole work.",
         },
         {
           type: "relation",
@@ -107,20 +116,25 @@ migrate(
           maxSelect: 1,
           // No cascade: deleting a room must not erase the artworks.
           cascadeDelete: false,
+          help: "The room where it hangs. Only for a whole work: an element follows the work it belongs to.",
         },
         {
           type: "number",
           name: "pos_x",
           min: 0,
           max: 1,
-          help: "Horizontal position on the floor map, from 0 (left) to 1 (right).",
+          help:
+            "Horizontal position on the floor map, from 0 (left) to 1 (right). " +
+            "Only for a whole work: an element is not placed separately.",
         },
         {
           type: "number",
           name: "pos_y",
           min: 0,
           max: 1,
-          help: "Vertical position on the floor map, from 0 (top) to 1 (bottom).",
+          help:
+            "Vertical position on the floor map, from 0 (top) to 1 (bottom). " +
+            "Only for a whole work: an element is not placed separately.",
         },
         {
           type: "text",
@@ -161,6 +175,49 @@ migrate(
         "CREATE INDEX `idx_artwork_room` ON `artwork` (`room`)",
       ],
     });
+    app.save(artwork);
+
+    // A work made of several pieces - a polyptych, a collage - is ONE artwork
+    // for the whole, plus one artwork per element pointing at it through
+    // `parent`. The element carries its own artist, year and texts, which is the
+    // whole point: those differ from one panel to the next.
+    //
+    // This relation points at `artwork` itself, so it cannot be declared in the
+    // definition above: `artwork.id` does not exist before the first save. Hence
+    // the second save - do NOT merge them back into one.
+    artwork.fields.addAt(
+      2,
+      new RelationField({
+        name: "parent",
+        collectionId: artwork.id,
+        maxSelect: 1,
+        // Deleting a whole work deletes its elements, and by cascade their
+        // translations. Same reasoning, and same warning in the content guide,
+        // as exhibition -> artwork above.
+        cascadeDelete: true,
+        help:
+          "Leave empty for an ordinary artwork. Fill it in only for one element of a work " +
+          "made of several pieces (a polyptych, a collage): point it at the whole work, " +
+          "the one that carries the room and the position on the map.",
+      }),
+    );
+
+    // Depth is capped at one level by the main.pb.js hook, and these rules are
+    // why: a filter cannot express an arbitrary depth, it would take
+    // `parent.parent.parent...` without end. So a root depends on its
+    // exhibition, an element on its root - which depends on its own exhibition.
+    // Unpublishing a whole work therefore hides every element with it.
+    const artworkRule =
+      "published = true && (" +
+      "(parent = '' && exhibition.published = true) || " +
+      "(parent.published = true && parent.exhibition.published = true))";
+    artwork.listRule = artworkRule;
+    artwork.viewRule = artworkRule;
+
+    artwork.indexes = artwork.indexes.concat([
+      "CREATE INDEX `idx_artwork_parent` ON `artwork` (`parent`)",
+    ]);
+
     app.save(artwork);
 
     const exhibitionTranslation = new Collection({
@@ -205,11 +262,18 @@ migrate(
     });
     app.save(exhibitionTranslation);
 
+    const translationRule =
+      "artwork.published = true && (" +
+      "(artwork.parent = '' && artwork.exhibition.published = true) || " +
+      "(artwork.parent.published = true && artwork.parent.exhibition.published = true))";
+
     const artworkTranslation = new Collection({
       type: "base",
       name: "artwork_translation",
-      listRule: "artwork.published = true && artwork.exhibition.published = true",
-      viewRule: "artwork.published = true && artwork.exhibition.published = true",
+      // Same two branches as the `artwork` rules above, one level down: a
+      // translation is visible exactly when its artwork is.
+      listRule: translationRule,
+      viewRule: translationRule,
       fields: [
         {
           type: "relation",
