@@ -29,13 +29,19 @@ Two rules to remember:
 2. **Nothing is visible until the `published` box is ticked.** It is your safety net: you can
    prepare an exhibition for months without anyone seeing it.
 
+One exception to those three levels: a work made of several pieces — a polyptych, a collage — is
+an artwork that holds other artworks. It stays a special case, described in
+[An artwork made of several parts](#an-artwork-made-of-several-parts).
+
 ---
 
 ## Adding an artwork
 
 1. Open the **`artwork`** collection then "New record".
 2. Fill in:
-   - **exhibition** — the exhibition it belongs to *(required)*
+   - **exhibition** — the exhibition it belongs to. Leave it empty only if this artwork is one
+     piece of a larger work, see "An artwork made of several parts" below.
+   - **parent** — leave it empty. It is only used for one piece of a larger work.
    - **room** — the room where it hangs
    - **code** — the number printed on the label, which the visitor types in the app (e.g. `12`).
      Digits and capitals only, and never twice the same in the museum.
@@ -68,6 +74,34 @@ Open **`artwork_translation`** then "New record".
 
 Accepted audio formats: MP3, M4A/AAC, WAV, OGG. **Prefer MP3**: at equivalent quality it weighs
 five to ten times less than a WAV, which makes all the difference for a visitor on mobile data.
+
+## An artwork made of several parts
+
+Some works are made of several pieces: a polyptych, a collage of photographs, a series of plates
+hung together. Each piece has its own artist, its own date, its own text — and yet the visitor sees
+one work on the wall, under one label.
+
+You describe it with **several artwork records**:
+
+1. First the **whole work**. An ordinary artwork record: its exhibition, its room, its position on
+   the map, the number on the label, and a photo of the whole. Leave **parent** empty.
+2. Then **one record per piece**. On each, fill in **parent** with the whole work, and leave
+   **exhibition**, **room**, **pos_x** and **pos_y** empty — a piece follows the work it belongs
+   to. Give it its own artist, year, technique and photo, then its translations, exactly as for any
+   other artwork.
+
+Use **sort** on the pieces to set their order: `0` for the first panel, `1` for the second, and so
+on.
+
+The dashboard refuses the two mistakes that are easy to make here: an artwork with **neither** an
+exhibition nor a parent (it would be saved, then appear nowhere, with nothing to tell you why), and
+an artwork with **both**. In each case it says what to do.
+
+> **One level only.** A piece cannot itself be split into pieces. If you try, the dashboard refuses
+> and points you back to the whole work.
+
+Unticking `published` on the whole work hides all its pieces at once, even if their own box stays
+ticked. And deleting the whole work deletes them.
 
 ## Adding an exhibition
 
@@ -132,6 +166,9 @@ The **`pos_x`** and **`pos_y`** positions of an artwork are proportions of that 
 
 An artwork at the centre of the map is therefore at `pos_x = 0.5`, `pos_y = 0.5`.
 
+For a work made of several pieces, the position goes on the **whole work** only. Its pieces are not
+placed separately: they hang in the same spot.
+
 Simple method: open the map image, spot the artwork by eye, estimate the fraction. `0.25` and
 `0.3` are enough — hundredth precision brings nothing.
 
@@ -170,8 +207,9 @@ empty artworks.
 
 ## Careful
 
-**Deleting an exhibition deletes all its artworks**, and their texts, and their audio. The
-operation is immediate and permanent. To remove an exhibition from the app without losing
+**Deleting an exhibition deletes all its artworks**, and their texts, and their audio — including,
+for a work made of several pieces, every one of its pieces. Deleting such a work alone deletes its
+pieces just the same. The operation is immediate and permanent. To remove an exhibition from the app without losing
 anything, **untick `published`** — it disappears from the app and stays intact in the dashboard.
 
 The same reasoning applies everywhere: *unticking `published`* is reversible, *deleting* is not.
@@ -181,7 +219,8 @@ The same reasoning applies everywhere: *unticking `published`* is reversible, *d
 In order, the most frequent causes:
 
 1. The **`published`** box is not ticked — on the artwork **or** on its exhibition. An artwork
-   published inside an unpublished exhibition stays invisible.
+   published inside an unpublished exhibition stays invisible. For one piece of a larger work,
+   check the box on the **whole work** too: it hides all its pieces.
 2. **The translation is missing** in the language of the visitor's phone.
 3. The **language** exists but its `active` box is unticked.
 4. The app is less than a minute behind its cache. Close it completely and reopen it.
