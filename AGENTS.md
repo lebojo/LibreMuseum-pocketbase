@@ -59,7 +59,7 @@ curl -s localhost:8090/api/app/version
 
 ## PocketBase traps verified on this project
 
-These four points cost time; do not rediscover them.
+These five points cost time; do not rediscover them.
 
 **Default paths are relative to the BINARY, not to the current directory.** Without explicit
 `--dir`, `--hooksDir` and `--migrationsDir`, PocketBase looks for `bin/pb_data` and silently
@@ -75,6 +75,12 @@ VM. Shared logic lives in `pb_hooks/lib/` and is loaded with `require()` **insid
 Only `*.pb.js` files are loaded as hooks, hence `lib/content.js` without the `.pb`.
 
 **`app.newQuery()` does not exist on the app object exposed to JS.** Use `app.db().newQuery()`.
+
+**A self-referencing relation takes two `app.save()`.** `artwork.parent` points at `artwork`, and
+the collection id does not exist before the first save — so the field is added afterwards, with a
+second save. The same goes for anything naming that field: API rules and indexes are validated
+against the existing schema, so they are set in the second save too, never in the
+`new Collection({...})`. See `pb_migrations/1786028520_exhibition_artwork.js`.
 
 ## Invariants not to break
 
@@ -107,6 +113,12 @@ to mean "nothing changes".
 
 **One single `museum` record per instance**, guaranteed by `pb_hooks/main.pb.js`, which also
 refuses its deletion.
+
+**A work made of several pieces is split over ONE level only**, enforced by `pb_hooks/main.pb.js`.
+This is not a matter of taste: the API rules that hide an unpublished work cannot express an
+arbitrary depth, they would need `parent.parent.parent...` without end. The same hooks enforce that
+an artwork carries exactly one of `exhibition` or `parent` — neither field is required on its own,
+so nothing in the schema would catch a record that has neither and then appears nowhere.
 
 **No visitor account.** The app is anonymous and read-only; the default `users` collection is
 deleted by a migration. Do not recreate it without a real need.
