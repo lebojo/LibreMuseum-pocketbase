@@ -40,3 +40,58 @@ ensure_pocketbase() {
 pb_dirs() {
 	echo "--dir=$1 --hooksDir=./pb_hooks --migrationsDir=./pb_migrations"
 }
+
+# --- Migrations edited in place -------------------------------------------
+# PocketBase records an applied migration BY FILENAME, and never replays it.
+# While the project has no release, migrations are edited in place rather than
+# stacked (see AGENTS.md), so a dev database silently stays on the old schema
+# while the hooks already expect the new one. The symptom is an opaque 400, far
+# from its cause - hence this check.
+#
+# We keep a checksum per migration inside the data directory it describes, so
+# the record follows the database it belongs to and disappears when it is wiped.
+
+migration_stamp() {
+	echo "$1/.migration-checksums"
+}
+
+# `shasum` is a Perl script and is missing from the slim Linux images this
+# project also supports, where `sha1sum` is the one that ships. Both print the
+# digest first, so the reader below does not care which one ran.
+migration_sha() {
+	if command -v shasum >/dev/null 2>&1; then
+		shasum "$@"
+	elif command -v sha1sum >/dev/null 2>&1; then
+		sha1sum "$@"
+	else
+		echo "Neither shasum nor sha1sum found: cannot check the migrations." >&2
+		return 1
+	fi
+}
+
+# Records the checksum of every migration currently on disk. Called after a
+# successful `migrate up`.
+record_migrations() {
+	migration_sha pb_migrations/*.js >"$(migration_stamp "$1")"
+}
+
+# Prints the migrations that were applied once and have CHANGED or DISAPPEARED
+# since. Both leave the database describing a schema no source file produces any
+# more - folding a migration back into the one that creates the collection, which
+# this project does while there is no release, does exactly that.
+#
+# A newly ADDED migration is not listed: `migrate up` applies it normally, and
+# demanding a reset for it would make the check unbearable.
+changed_migrations() {
+	local stamp sha file
+	stamp="$(migration_stamp "$1")"
+	[ -f "$stamp" ] || return 0
+
+	while read -r sha file; do
+		if [ ! -f "$file" ]; then
+			echo "  $file (removed)"
+		elif [ "$(migration_sha "$file" | awk '{print $1}')" != "$sha" ]; then
+			echo "  $file (changed)"
+		fi
+	done <"$stamp"
+}

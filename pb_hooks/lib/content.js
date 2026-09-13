@@ -223,10 +223,16 @@ function buildBundle(app, version) {
       };
     });
 
+  // Same two branches as the `artwork` API rules, kept word for word: an
+  // element of a work made of several pieces has no exhibition of its own, it
+  // hangs off its parent. Filtering on `exhibition.published` alone would drop
+  // every element out of the bundle.
   const artworks = app
     .findRecordsByFilter(
       "artwork",
-      "published = true && exhibition.published = true",
+      "published = true && (" +
+        "(parent = '' && exhibition.published = true) || " +
+        "(parent.published = true && parent.exhibition.published = true))",
       "sort,code",
       10000,
       0,
@@ -234,6 +240,9 @@ function buildBundle(app, version) {
     .map(function (a) {
       return {
         id: a.id,
+        // Empty on a whole work, set on one of its elements. The app groups on
+        // it: the array stays flat, as every other relation in this bundle.
+        parent: a.getString("parent"),
         exhibition: a.getString("exhibition"),
         room: a.getString("room"),
         pos_x: a.getFloat("pos_x"),

@@ -264,6 +264,110 @@
           "audio_duration": 0
         }
       }
+    },
+    {
+      "key": "a7",
+      "exhibition": "permanent",
+      "room": "r2",
+      "code": "4",
+      "pos_x": 0.61,
+      "pos_y": 0.42,
+      "artist": "Camille Ferrand, Jean Roux, Alice Meyer",
+      "year": "1978",
+      "technique": "Three gelatin silver prints, mounted together",
+      "inventory_number": "INV-1978-011",
+      "images": ["artwork-3.png"],
+      "sort": 3,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Firing the Great Kiln, triptych",
+          "text": "<p>A work made of several pieces: this is the WHOLE work, the one that carries the room, the position on the map and the number on the label. Its three panels are separate artworks, attached to it through <code>parent</code>.</p><p>Three photographers followed the last wood firing of the great kiln, in April 1978, each taking one moment of it. Their prints are shown as they were hung then, side by side.</p>",
+          "audio": "audio-artwork-3.wav",
+          "audio_duration": 2
+        },
+        "fr": {
+          "title": "La Cuisson du grand four, triptyque",
+          "text": "<p>Une œuvre en plusieurs pièces : voici l'œuvre ENTIÈRE, celle qui porte la salle, la position sur le plan et le numéro de cartel. Ses trois panneaux sont des œuvres distinctes, rattachées par <code>parent</code>.</p><p>Trois photographes ont suivi la dernière cuisson au bois du grand four, en avril 1978, chacun en saisissant un moment. Leurs tirages sont présentés tels qu'ils furent accrochés alors, côte à côte.</p>",
+          "audio": "audio-artwork-3.wav",
+          "audio_duration": 2
+        }
+      }
+    },
+    {
+      "key": "a7p1",
+      "parent": "a7",
+      "artist": "Camille Ferrand",
+      "year": "1978",
+      "technique": "Gelatin silver print",
+      "inventory_number": "INV-1978-011a",
+      "images": ["artwork-1.png"],
+      "sort": 0,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Panel I — Loading",
+          "text": "<p>Four in the morning. The pots go in cold, stacked by hand, the largest at the back where the heat is steadiest.</p><p>Ferrand worked without a flash: the only light is the oil lamp hanging from the vault.</p>",
+          "audio": "",
+          "audio_duration": 0
+        },
+        "fr": {
+          "title": "Panneau I — L'enfournement",
+          "text": "<p>Quatre heures du matin. Les pièces entrent froides, empilées à la main, les plus grandes au fond où la chaleur est la plus régulière.</p><p>Ferrand a travaillé sans flash : la seule lumière est celle de la lampe à huile suspendue à la voûte.</p>",
+          "audio": "",
+          "audio_duration": 0
+        }
+      }
+    },
+    {
+      "key": "a7p2",
+      "parent": "a7",
+      "artist": "Jean Roux",
+      "year": "1978",
+      "technique": "Gelatin silver print",
+      "inventory_number": "INV-1978-011b",
+      "images": ["artwork-2.png"],
+      "sort": 1,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Panel II — The Fire",
+          "text": "<p>Thirty hours of feeding, two men taking turns. The kiln holds at 1280 degrees; the colour of the flame seen through the spyhole was the only thermometer anyone trusted.</p>",
+          "audio": "",
+          "audio_duration": 0
+        },
+        "fr": {
+          "title": "Panneau II — Le feu",
+          "text": "<p>Trente heures d'alimentation, deux hommes se relayant. Le four tient 1280 degrés ; la couleur de la flamme vue par le regard était le seul thermomètre auquel on se fiait.</p>",
+          "audio": "",
+          "audio_duration": 0
+        }
+      }
+    },
+    {
+      "key": "a7p3",
+      "parent": "a7",
+      "artist": "Alice Meyer",
+      "year": "1978",
+      "technique": "Gelatin silver print",
+      "inventory_number": "INV-1978-011c",
+      "images": ["artwork-3.png"],
+      "sort": 2,
+      "published": true,
+      "translations": {
+        "en": {
+          "title": "Panel III — Cooling",
+          "text": "<p>Three days later the kiln is opened. Meyer photographed the moment the potters see what came out — the only one of the three images with a face in it.</p>",
+          "audio": "",
+          "audio_duration": 0
+        },
+        "fr": {
+          "title": "Panneau III — Le refroidissement",
+          "text": "<p>Trois jours plus tard, on ouvre le four. Meyer a photographié l'instant où les potiers découvrent ce qui en sort — la seule des trois images où figure un visage.</p>",
+          "audio": "",
+          "audio_duration": 0
+        }
+      }
     }
   ],
 

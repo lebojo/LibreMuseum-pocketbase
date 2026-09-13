@@ -1,7 +1,8 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 // `pocketbase seed` command: fills a fresh instance with a bilingual demo
-// museum (2 exhibitions, 6 artworks, floor maps, audio, pages).
+// museum (2 exhibitions, 10 artworks - one of them a triptych in three pieces -
+// floor maps, audio, pages).
 //
 // It serves two purposes: giving the mobile app something to display from the
 // very first launch, and providing a concrete example of how content is
@@ -138,9 +139,31 @@ $app.rootCmd.addCommand(
       });
 
       // --- Artworks --------------------------------------------------------
+      // A work made of several pieces is one artwork for the whole, plus one
+      // artwork per element carrying `parent`. Elements are resolved through
+      // `artworkByKey`, so a whole work MUST appear BEFORE its elements in
+      // content.json: there, the order of the array is a dependency, not
+      // presentation.
+      const artworkByKey = {};
       data.artworks.forEach((a) => {
         const record = new Record($app.findCollectionByNameOrId("artwork"));
-        record.set("exhibition", exhibitionByKey[a.exhibition].id);
+        // Exactly one of the two, as the main.pb.js guard requires: an element
+        // follows the exhibition of the work it belongs to.
+        if (a.exhibition) record.set("exhibition", exhibitionByKey[a.exhibition].id);
+        if (a.parent) {
+          // The ordering above is a dependency the file cannot express, so we
+          // name it here: without this check the seed dies on `undefined.id`
+          // halfway through, and the records already written make the guard at
+          // the top refuse every retry - leaving no way out but wiping pb_data.
+          const whole = artworkByKey[a.parent];
+          if (!whole) {
+            throw new Error(
+              `artwork "${a.key}": unknown parent "${a.parent}". A whole work must appear ` +
+                "before its elements in content.json.",
+            );
+          }
+          record.set("parent", whole.id);
+        }
         if (a.room) record.set("room", roomByKey[a.room].id);
         record.set("pos_x", a.pos_x);
         record.set("pos_y", a.pos_y);
@@ -156,6 +179,7 @@ $app.rootCmd.addCommand(
         record.set("sort", a.sort);
         record.set("published", a.published);
         $app.save(record);
+        artworkByKey[a.key] = record;
 
         saveTranslations("artwork_translation", "artwork", record, a.translations, (t, v) => {
           t.set("title", v.title);
@@ -180,9 +204,11 @@ $app.rootCmd.addCommand(
         });
       });
 
+      const parts = data.artworks.filter((a) => a.parent).length;
       console.log(
-        `Seed done: ${data.exhibitions.length} exhibitions, ${data.artworks.length} artworks, ` +
-          `${data.pages.length} pages, ${data.languages.length} languages.`,
+        `Seed done: ${data.exhibitions.length} exhibitions, ${data.artworks.length} artworks ` +
+          `(of which ${parts} elements of a composite work), ${data.pages.length} pages, ` +
+          `${data.languages.length} languages.`,
       );
     },
   }),
