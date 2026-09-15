@@ -94,7 +94,7 @@ pb_hooks/         Server logic in JS, hot-reloaded.
 seed/             Demo museum (content + generated media)
 scripts/          dev.sh (working database), test.sh (disposable database)
 docs/             Documentation for the museum staff
-  getting-started.html  Illustrated walkthrough, opens in a browser
+  getting-started.html  Illustrated walkthrough, served at /getting-started
   CONTENT-GUIDE.md      Field-by-field reference
 ```
 

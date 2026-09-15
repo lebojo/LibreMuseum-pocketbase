@@ -7,10 +7,37 @@
 	# about 5, which matters on the mobile network of a museum basement.
 	encode zstd gzip
 
-	reverse_proxy pocketbase:8090 {
-		# PocketBase reads the visitor's real IP from these headers for its
-		# rate limits and its logs.
-		header_up X-Forwarded-For {remote_host}
-		header_up X-Real-IP {remote_host}
+	# Caddy serves the staff guide itself, so it stays readable even when
+	# PocketBase is down - precisely when someone goes looking for it.
+	handle /getting-started {
+		redir * /getting-started/
+	}
+
+	# The trailing slash is what the redirect above is for: the page points at
+	# its screenshots with relative paths, which only resolve under the prefix.
+	handle_path /getting-started/* {
+		root * /srv/docs
+
+		# The guide links to the content guide, which is Markdown: served under
+		# its own type a browser downloads it instead of showing it.
+		@markdown path *.md
+		header @markdown Content-Type "text/plain; charset=utf-8"
+
+		file_server {
+			index getting-started.html
+			# Caddy serves dotfiles like any other file. Nothing here is meant
+			# to be secret, but a stray .env or .DS_Store must not become a
+			# public URL just because it landed next to the guide.
+			hide .*
+		}
+	}
+
+	handle {
+		reverse_proxy pocketbase:8090 {
+			# PocketBase reads the visitor's real IP from these headers for its
+			# rate limits and its logs.
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Real-IP {remote_host}
+		}
 	}
 }
